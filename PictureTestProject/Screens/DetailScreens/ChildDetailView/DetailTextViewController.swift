@@ -25,19 +25,20 @@ final class DetailTextViewController: UIViewController, SetDetailView {
     override func loadView() {
         super.loadView()
         
+        addAllSubViewInView()
+    }
+    
+    private func addAllSubViewInView() {
         view.addSubview(titleLable)
         setConstraints()
-        view.backgroundColor = .blue
     }
     
     private func setConstraints() {
         
         NSLayoutConstraint.activate([
-            
             titleLable.topAnchor.constraint(equalTo: view.layoutMarginsGuide.topAnchor, constant: 20),
             titleLable.leftAnchor.constraint(equalTo: view.layoutMarginsGuide.leftAnchor, constant: 0),
             titleLable.rightAnchor.constraint(equalTo: view.layoutMarginsGuide.rightAnchor, constant: 0),
-            
         ])
         
     }

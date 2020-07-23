@@ -10,7 +10,7 @@ import UIKit
 
 class DetailPictureViewController: UIViewController, SetDetailView {
     
-    var data : DataClass? {
+    private var data : DataClass? {
         didSet {
             titleLable.text = data?.text
         }
@@ -36,17 +36,16 @@ class DetailPictureViewController: UIViewController, SetDetailView {
         addAllSubViewInView()
     }
     
-    func addAllSubViewInView() {
+    private func addAllSubViewInView() {
         view.addSubview(titleLable)
         view.addSubview(pictureToView)
         
         setConstraints()
     }
     
-    func setConstraints() {
+    private func setConstraints() {
         
         NSLayoutConstraint.activate([
-            
             pictureToView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             pictureToView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
             pictureToView.widthAnchor.constraint(equalToConstant: 100),
@@ -55,7 +54,6 @@ class DetailPictureViewController: UIViewController, SetDetailView {
             titleLable.topAnchor.constraint(equalTo: pictureToView.layoutMarginsGuide.bottomAnchor, constant: 20),
             titleLable.leftAnchor.constraint(equalTo: view.layoutMarginsGuide.leftAnchor, constant: 0),
             titleLable.rightAnchor.constraint(equalTo: view.layoutMarginsGuide.rightAnchor, constant: 0),
-            
         ])
         
     }
@@ -68,13 +66,7 @@ class DetailPictureViewController: UIViewController, SetDetailView {
     
     func setData(data: DataClass?) {
         self.data = data
-        DispatchQueue.main.async {
-            if let url = URL(string: data?.url ?? "LoadError"),
-                let data = try? Data(contentsOf: url)  {
-                
-                self.pictureToView.image = UIImage(data: data as Data)
-            }
-        }
+        self.pictureToView.setCustomImage(data?.url)
     }
     
 }

@@ -56,20 +56,7 @@ class PictureTableViewCell: TextTableViewCell {
     override func configure(data: DataClass) {
         self.data = data
         titleLable.text = data.text
-        
-        DispatchQueue.main.async {
-            if let url = URL(string: data.url ?? "LoadError"),
-                let data = try? Data(contentsOf: url)  {
-                
-                self.pictureToView.image = UIImage(data: data as Data)
-            }
-        }
-    }
-    
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-        
-        // Configure the view for the selected state
+        self.pictureToView.setCustomImage(data.url)
     }
     
 }

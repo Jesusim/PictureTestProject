@@ -10,12 +10,16 @@ import Foundation
 
 final class NetworkService {
     
+    enum NetworkingErrors: Error {
+        case returnedError(Error)
+    }
+    
     static let shared = NetworkService()
     private init() {}
     
     private let baseURL = "https://pryaniky.com/static/json"
     
-    typealias GenericCompletion<T> = (T?, Error?) -> ()
+    typealias GenericCompletion<T> = (T?, NetworkingErrors?) -> ()
     
     enum HttpRequestType : String {
         case Get = "GET", Post = "POST"
@@ -43,17 +47,17 @@ final class NetworkService {
         
         URLSession.shared.dataTask(with: request) { (data, response, error) in
             
-            if error != nil {
-                completion?(nil, error)
-            }
-            
-            do {
-                
-                let some = try JSONDecoder().decode(T.self, from: data!)
-                completion?(some, nil)
-                
-            } catch let error {
-                completion?(nil, error)
+            if let currentError = error {
+                completion?(nil, NetworkingErrors.returnedError(currentError))
+            } else {
+                do {
+                    
+                    let some = try JSONDecoder().decode(T.self, from: data!)
+                    completion?(some, nil)
+                    
+                } catch let error {
+                    completion?(nil, NetworkingErrors.returnedError(error))
+                }
             }
             
         }.resume()

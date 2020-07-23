@@ -16,7 +16,6 @@ final class ListTableViewController: UITableViewController {
     
     override func loadView() {
         super.loadView()
-        
         loadNewItems()
     }
 
@@ -31,7 +30,7 @@ final class ListTableViewController: UITableViewController {
         network.getTypesToView { (newTypesToView, error) in
             
             if error != nil {
-                print(error!)
+                self.setError(titelError: "NetworkError", messageError:  error!.localizedDescription)
             }
             
             guard let typesToView = newTypesToView else {
@@ -70,7 +69,6 @@ final class ListTableViewController: UITableViewController {
         for item in filterData {
             
             let cellIdentifier = switchType(index: indexPath.row)
-            
             let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as! TextTableViewCell
             cell.identifier = cellIdentifier
             cell.configure(data: item.data)
@@ -99,9 +97,15 @@ final class ListTableViewController: UITableViewController {
         performSegue(withIdentifier: "nextPage", sender: (cell?.data, cell?.identifier))
     }
     
+    private func setError(titelError : String, messageError: String ) {
+        let alert = UIAlertController(title: titelError, message: messageError, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default) { (_) in
+            self.loadNewItems()
+        })
+        self.present(alert, animated: true) {}
+    }
   
     // MARK: - Navigation
-
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "nextPage" {

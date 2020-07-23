@@ -10,13 +10,13 @@ import UIKit
 
 class DetailAllVriantsTableViewController: UITableViewController, SetDetailView {
 
-    var variants = [Variant]() {
+    private var variants = [Variant]() {
         didSet {
             tableView.reloadData()
         }
     }
     
-    var cellIdentifierString = "Cell"
+    private var cellIdentifierString = "Cell"
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,7 +29,6 @@ class DetailAllVriantsTableViewController: UITableViewController, SetDetailView 
         variants = newVariants
     }
     
-
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {

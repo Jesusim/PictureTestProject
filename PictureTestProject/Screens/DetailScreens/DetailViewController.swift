@@ -10,29 +10,37 @@ import UIKit
 
 final class DetailViewController: UIViewController {
     
-    var data: DataClass?
     var identifier : String?
-   
+    var detailFactoryScreen : DetailFactoryScreen?
+    var data: DataClass? {
+        didSet {
+            detailFactoryScreen = DetailFactoryScreen(data: data)
+        }
+    }
+    
     override func loadView() {
         super.loadView()
         
+        setVCChildVC()
+    }
+    
+    private func setVCChildVC() {
+        
         switch identifier {
         case "CellText":
-            let childVC = DetailTextViewController()
-            childVC.setData(data: data)
+            guard let childVC = detailFactoryScreen?.detailTextViewController() else { return }
             configureChildViewController(childController: childVC, onView: view)
             navigationItem.title = data?.text
             
         case "CellPicture":
-            let childVC = DetailPictureViewController()
-            childVC.setData(data: data)
+            guard let childVC = detailFactoryScreen?.detailPictureViewController() else { return }
             configureChildViewController(childController: childVC, onView: view)
+            navigationItem.title = data?.text
             
         case "CellSelector":
-            let childVC = DetailAllVriantsTableViewController()
-            childVC.setData(data: data)
+            guard let childVC = detailFactoryScreen?.detailAllVriantsTableViewController() else { return }
             configureChildViewController(childController: childVC, onView: view)
-             navigationItem.title = "\(data?.selectedId ?? 000)"
+            navigationItem.title = "\(data?.selectedId ?? 000)"
             
         default:
             break
@@ -40,14 +48,9 @@ final class DetailViewController: UIViewController {
         
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-    }
-    
 }
 
-extension UIViewController {
+extension DetailViewController {
     
     func configureChildViewController(childController: UIViewController, onView: UIView?) {
         var holderView = self.view
