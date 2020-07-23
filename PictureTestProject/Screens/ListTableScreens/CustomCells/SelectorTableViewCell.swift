@@ -14,11 +14,11 @@ class SelectorTableViewCell: TextTableViewCell {
         super.awakeFromNib()
         
         backgroundColor = .darkGray
-        // Initialization code
     }
     
     override func configure(data: DataClass) {
-        textToLable = data.variants?[data.selectedId ?? 0].text
+        self.data = data
+        textLabel?.text = data.variants?[data.selectedId ?? 0].text
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {

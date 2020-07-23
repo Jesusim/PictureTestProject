@@ -14,20 +14,17 @@ protocol ConfigurableCell {
 
 class TextTableViewCell: UITableViewCell, ConfigurableCell {
     
-    var textToLable : String? {
-        didSet {
-            textLabel?.text = self.textToLable
-        }
-    }
+    var data: DataClass?
+    var identifier : String?
     
     override func awakeFromNib() {
         super.awakeFromNib()
         
         backgroundColor = .brown
-        // Initialization code
     }
     
     func configure(data: DataClass) {
+        self.data = data
         textLabel?.text = data.text
     }
     
